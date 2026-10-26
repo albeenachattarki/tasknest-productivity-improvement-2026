@@ -1,35 +1,15 @@
-const API_URL = 'http://localhost:5000';
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
-export const fetchTasks = async () => {
-  const response = await fetch(`${API_URL}/tasks`);
-  return response.json();
+const request = async (url, options) => {
+  const response = await fetch(`${API_URL}${url}`, options);
+  if (!response.ok) throw new Error(`Request failed: ${response.status}`);
+  return response.status === 204 ? null : response.json();
 };
 
-export const createTask = async (title) => {
-  const response = await fetch(`${API_URL}/tasks`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ title })
-  });
-  return response.json();
-};
-
-export const updateTaskStatus = async (id, completed) => {
-  const response = await fetch(`${API_URL}/tasks/${id}`, {
-    method: 'PATCH',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ completed })
-  });
-  return response.json();
-};
-
-export const deleteTaskFromApi = async (id) => {
-  await fetch(`${API_URL}/tasks/${id}`, {
-    method: 'DELETE'
-  });
-};
-
-export const fetchScore = async () => {
-  const response = await fetch(`${API_URL}/score`);
-  return response.json();
-};
+export const fetchTasks = () => request('/tasks');
+export const createTask = (title, important) => request('/tasks', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ title, important }) });
+export const updateTask = (id, changes) => request(`/tasks/${id}`, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(changes) });
+export const updateTaskStatus = (id, completed) => updateTask(id, { completed });
+export const toggleTaskImportance = (id, important) => updateTask(id, { important });
+export const deleteTaskFromApi = (id) => request(`/tasks/${id}`, { method: 'DELETE' });
+export const fetchScore = () => request('/score');

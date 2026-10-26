@@ -1,45 +1,16 @@
-import React, { useState, useEffect } from 'react';
-import { fetchScore } from '../services/api';
+import React, { useEffect, useState } from 'react';
 import { Award, TrendingUp } from 'lucide-react';
+import { fetchScore } from '../services/api';
 
 const ScoreWidget = ({ tasks }) => {
-  const [score, setScore] = useState(0);
-
-  useEffect(() => {
-    const getScore = async () => {
-      try {
-        const data = await fetchScore();
-        setScore(data.value);
-      } catch (err) {
-        console.error('Error fetching score:', err);
-      }
-    };
-    getScore();
-  }, [tasks]);
-
+  const [score, setScore] = useState({ value: 0, completionRate: 0, consistencyBonus: 0, activeDays: 0 });
+  useEffect(() => { fetchScore().then(setScore).catch((err) => console.error('Error fetching score:', err)); }, [tasks]);
+  const status = score.value >= 80 ? 'Excellent momentum' : score.value >= 50 ? 'Building momentum' : 'Ready to get started';
   return (
     <div className="score-hero-card">
-      <div className="score-hero-left">
-        <h2>Your Productivity</h2>
-        <div className="score-big">
-          {score}
-          <span>pts</span>
-        </div>
-        <p style={{ marginTop: '1rem', opacity: 0.7 }}>
-          Keep completing tasks to reach your daily goal!
-        </p>
-      </div>
-      <div className="score-hero-right">
-        <div className="status-badge" style={{ background: '#4ade80', color: '#064e3b', marginBottom: '1rem' }}>
-          <TrendingUp size={16} />
-          High Energy Today
-        </div>
-        <div className="logo-icon" style={{ width: '80px', height: '80px', borderRadius: '50%', background: 'rgba(255,255,255,0.1)', color: 'white' }}>
-          <Award size={48} />
-        </div>
-      </div>
+      <div className="score-hero-left"><h2>Your Productivity</h2><div className="score-big">{score.value}<span>/100</span></div><p className="score-explanation">{score.completionRate}% weighted completion · {score.activeDays}/7 active days</p><div className="score-breakdown"><span>Completion {score.completionRate}%</span><span>Consistency +{score.consistencyBonus}</span></div></div>
+      <div className="score-hero-right"><div className="status-badge"><TrendingUp size={16} />{status}</div><div className="logo-icon score-award"><Award size={48} /></div></div>
     </div>
   );
 };
-
 export default ScoreWidget;
