@@ -19,6 +19,8 @@ const Tasks = () => {
   };
 
   useEffect(() => {
+    // The fetch callback updates loading/task state after the component mounts.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     getTasks();
   }, []);
 

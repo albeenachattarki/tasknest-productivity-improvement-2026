@@ -7,12 +7,16 @@ datasource db {
 }
 
 model Task {
-  id        Int      @id @default(autoincrement())
-  title     String
-  completed Boolean  @default(false)
-  createdAt DateTime @default(now())
+  id          Int       @id @default(autoincrement())
+  title       String
+  completed   Boolean   @default(false)
+  important   Boolean   @default(false)
+  completedAt DateTime?
+  createdAt   DateTime  @default(now())
 }
 
+// Kept for backwards-compatible database migrations. The score endpoint now
+// calculates the value from tasks so it cannot drift from the task list.
 model Score {
   id        Int      @id @default(autoincrement())
   value     Int      @default(0)

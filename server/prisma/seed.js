@@ -2,32 +2,14 @@ const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
 async function main() {
-  // Clear existing data
   await prisma.task.deleteMany({});
   await prisma.score.deleteMany({});
-
-  // Seed tasks
-  await prisma.task.createMany({
-    data: [
-      { title: 'Finish assignment', completed: false },
-      { title: 'Review lecture notes', completed: true },
-      { title: 'Complete coding challenge', completed: false },
-    ],
-  });
-
-  // Seed initial score
-  await prisma.score.create({
-    data: { value: 40 },
-  });
-
+  await prisma.task.createMany({ data: [
+    { title: 'Finish assignment', important: true, completed: false },
+    { title: 'Review lecture notes', important: false, completed: true, completedAt: new Date() },
+    { title: 'Complete coding challenge', important: true, completed: false },
+  ] });
+  await prisma.score.create({ data: { value: 0 } });
   console.log('Database seeded successfully!');
 }
-
-main()
-  .catch((e) => {
-    console.error(e);
-    process.exit(1);
-  })
-  .finally(async () => {
-    await prisma.$disconnect();
-  });
+main().catch((error) => { console.error(error); process.exit(1); }).finally(async () => prisma.$disconnect());
