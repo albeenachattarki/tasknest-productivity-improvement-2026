@@ -45,3 +45,8 @@ For a fresh PostgreSQL database, set `DATABASE_URL`, run `npx prisma db push`, o
 - Backend Deployment Link: blocked — no Render/Railway hosting credentials or PostgreSQL DATABASE_URL were available in this session.
 
 The source repository and PR are public and reproducible; add the provider URLs here after connecting the hosting accounts.
+
+## 7. Submission links
+
+- Pull Request: https://github.com/albeenachattarki/tasknest-productivity-improvement-2026/pull/1
+- Explanation Video: https://drive.google.com/file/d/1E9dJGwj-UfMqyn9NRAHwkFbpbXHDOSFX/view?usp=sharing
