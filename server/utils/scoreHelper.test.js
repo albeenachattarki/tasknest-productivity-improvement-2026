@@ -16,7 +16,7 @@ test('important completed tasks count twice as much as regular tasks', () => {
   assert.equal(result.value, 56);
 });
 
-test('score never changes when a task is merely created', () => {
+test('adding an incomplete task lowers progress until it is completed', () => {
   const now = new Date('2026-10-26T12:00:00.000Z');
   const before = calculateProductivityScore([{ completed: true, important: false, completedAt: now }], now);
   const after = calculateProductivityScore([

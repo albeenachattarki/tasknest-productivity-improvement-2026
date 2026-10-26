@@ -19,7 +19,7 @@ The score should be a deterministic summary of the current work: completing task
 
 - **80 points:** weighted completion rate. Important tasks have weight 2; regular tasks have weight 1.
 - **20 points:** consistency bonus based on the number of distinct days with completed work in the last seven days.
-- A new task does not change the score until it is completed. Removing a task naturally recalculates the score from the remaining tasks.
+- Creating an incomplete task awards no points, but it can lower the completion percentage because the new task increases the weighted-work denominator. This is intentional: the score represents progress against the current workload. Completing the new task then raises the score. Removing a task naturally recalculates the score from the remaining tasks.
 
 ## 4. Implementation details
 
@@ -28,7 +28,7 @@ The score should be a deterministic summary of the current work: completing task
 - Updated task create/update endpoints to validate titles, accept importance, and set/clear completion timestamps.
 - Added important-task controls to task creation and task cards.
 - Updated the dashboard widget to show weighted completion, consistency points, active days, and a descriptive status.
-- Added backend unit tests for empty state, importance weighting, and the fact that creating an incomplete task cannot increase the score.
+- Added backend unit tests for empty state, importance weighting, and the intended workload-denominator behavior: adding an incomplete task does not award points and can lower the score until that work is completed.
 - Made the frontend API URL configurable through `VITE_API_URL` for deployment.
 
 ## 5. Verification
@@ -41,5 +41,7 @@ For a fresh PostgreSQL database, set `DATABASE_URL`, run `npx prisma db push`, o
 
 ## 6. Deployment links
 
-- Frontend Deployment Link: to be added after deployment
-- Backend Deployment Link: to be added after deployment
+- Frontend Deployment Link: blocked — no Vercel/Netlify deployment credentials were available in this session.
+- Backend Deployment Link: blocked — no Render/Railway hosting credentials or PostgreSQL DATABASE_URL were available in this session.
+
+The source repository and PR are public and reproducible; add the provider URLs here after connecting the hosting accounts.
